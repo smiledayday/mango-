@@ -17,8 +17,11 @@ import Rabbsh from "./Rabbsh";
 import CreateDocs from './docs/CreateDocs'
 import RencentDocs from './docs/RencentDocs'
 import ParticipateDocs from './docs/ParticipateDocs'
+import EditDocs from './docs/EditDocs'
+import Header from './components/Header';
 
-const { Header, Sider, Content } = Layout;
+
+const { Sider, Content } = Layout;
 
 const LeftIcon = styled.div``
 
@@ -45,6 +48,9 @@ const Home = () => {
     <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
+          <Menu.Item key="5" icon={<UploadOutlined />}>
+            <Link to="docs/write">写文档</Link>
+          </Menu.Item>
           <Menu.Item key="1" icon={<UserOutlined />}>
             <Dropdown overlay={menu} trigger={['click']}>
               <div>所有文档 <DownOutlined /></div>
@@ -62,12 +68,7 @@ const Home = () => {
         </Menu>
       </Sider>
       <Layout>
-        <Header
-          className="site-layout-background"
-          style={{ padding: 0, background: "#fff" }}
-        >
-
-          <div onClick={toggle} style={{ marginLeft: '1rem' }}>{collapsed ? <MenuUnfoldOutlined></MenuUnfoldOutlined> : <MenuFoldOutlined></MenuFoldOutlined>}</div>
+        <Header>
         </Header>
         <Content
           style={{
@@ -78,10 +79,11 @@ const Home = () => {
         >
           <Routes>
             <Route path="docs/create" element={<CreateDocs />} />
+            <Route path="docs/write" element={<EditDocs />} />
             <Route path="docs/recent" element={<RencentDocs />} />
             <Route path="docs/participate" element={<ParticipateDocs />} />
             <Route path="help" element={<Help />} />
-            <Route path="favorite" element={<Favorite/>} />
+            <Route path="favorite" element={<Favorite />} />
             <Route path="rabbsh" element={<Rabbsh />} />
           </Routes>
         </Content>
