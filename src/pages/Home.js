@@ -1,95 +1,76 @@
-import React from 'react';
-import { useState } from "react";
+import React from 'react'
+// import { Routes, Route, Link } from 'react-router-dom'
+import { Layout, Button, Input, Menu, Dropdown } from 'antd'
 import styled from '@emotion/styled'
-import { Routes, Route, Link } from "react-router-dom";
-import { Layout, Menu, Dropdown } from "antd";
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  DownOutlined
-} from "@ant-design/icons";
-import Help from "./Help";
-import Favorite from "./Favorite";
-import Rabbsh from "./Rabbsh";
-import CreateDocs from './docs/CreateDocs'
-import RencentDocs from './docs/RencentDocs'
-import ParticipateDocs from './docs/ParticipateDocs'
-import EditDocs from './docs/EditDocs'
-import Header from './components/Header';
+import { DownOutlined } from '@ant-design/icons'
+import ToolSider from './other/ToolSider'
+import { Header } from 'antd/lib/layout/layout'
+import DocsInfoTemplate from './components/DocsInfoTemplate'
+import UserInfo from './components/UserInfo'
 
+const { Content } = Layout
+const { Search } = Input
 
-const { Sider, Content } = Layout;
+const Title = styled.div`
+  font-size: 0.1rem;
+  font-family: PingFangSC-Semibold, PingFang SC;
+  font-weight: 600;
+  color: #444444;
+  line-height: 0.48rem;
+`
 
-const LeftIcon = styled.div``
-
-const menu = (
-  <Menu>
-    <Menu.Item>
-      <Link to="/docs/recent">最近浏览的文档</Link>
-    </Menu.Item>
-    <Menu.Item>
-      <Link to="/docs/create">我创建的文档</Link>
-    </Menu.Item>
-    <Menu.Item>
-      <Link to="/docs/participate">我参与的文档</Link>
-    </Menu.Item>
-  </Menu>
-);
+const Wrapper = styled.div``
 
 const Home = () => {
-  const [collapsed, setCollapsed] = useState(false);
-  const toggle = () => {
-    setCollapsed(!collapsed);
-  };
+  const createDocs = () => {
+    window.location.href = `/docs/create?id=${Math.floor(Math.random() * 100)}`
+  }
+
+  const onSearch = value => console.log(value)
+
+  const menu = (
+    <Menu>
+      <Menu.Item>
+        <div onClick={createDocs}>普通文档</div>
+      </Menu.Item>
+    </Menu>
+  )
   return (
     <Layout>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
-          <Menu.Item key="5" icon={<UploadOutlined />}>
-            <Link to="docs/write">写文档</Link>
-          </Menu.Item>
-          <Menu.Item key="1" icon={<UserOutlined />}>
-            <Dropdown overlay={menu} trigger={['click']}>
-              <div>所有文档 <DownOutlined /></div>
-            </Dropdown>
-          </Menu.Item>
-          <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-            <Link to="favorite">我的收藏</Link>
-          </Menu.Item>
-          <Menu.Item key="3" icon={<UploadOutlined />}>
-            <Link to="rabbsh">回收站</Link>
-          </Menu.Item>
-          <Menu.Item key="4" icon={<UploadOutlined />}>
-            <Link to="help">帮助</Link>
-          </Menu.Item>
-        </Menu>
-      </Sider>
+      <ToolSider></ToolSider>
       <Layout>
-        <Header>
+        <Header
+          style={{
+            background: '#fff',
+            display: 'flex',
+            justifyContent: 'flex-end',
+            alignItems: 'center'
+          }}
+        >
+          <Search onSearch={onSearch} style={{ marginRight: '400px' }}></Search>
+          <Button type='primary'>
+            <Dropdown overlay={menu}>
+              <a>
+                创建文档 <DownOutlined />
+              </a>
+            </Dropdown>
+          </Button>
+          <UserInfo />
         </Header>
         <Content
           style={{
-            margin: "24px 16px",
-            padding: 24,
-            minHeight: 280,
+            minHeight: 750
           }}
         >
-          <Routes>
-            <Route path="docs/create" element={<CreateDocs />} />
-            <Route path="docs/write" element={<EditDocs />} />
-            <Route path="docs/recent" element={<RencentDocs />} />
-            <Route path="docs/participate" element={<ParticipateDocs />} />
-            <Route path="help" element={<Help />} />
-            <Route path="favorite" element={<Favorite />} />
-            <Route path="rabbsh" element={<Rabbsh />} />
-          </Routes>
+          <Wrapper>
+            <Title>最近查看的文档</Title>
+            {/* 文档列表 */}
+            <DocsInfoTemplate></DocsInfoTemplate>
+          </Wrapper>
         </Content>
       </Layout>
     </Layout>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
